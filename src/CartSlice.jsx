@@ -16,6 +16,7 @@ export const CartSlice = createSlice({
         state.items.push({ name, image, cost, quantity: 1 });
       }
       state.totalQuantity++;
+      
     },
     removeItem: (state, action) => {
       const itemToRemove = state.items.find(item => item.name === action.payload);
@@ -31,8 +32,14 @@ export const CartSlice = createSlice({
         state.totalQuantity += quantity - itemToUpdate.quantity;
         itemToUpdate.quantity = quantity;
       }
-    
-    },
+     },
+     decrement: (state, action) => {
+      const item = state.items.find(item => item.name === action.payload);
+      if (item && item.quantity > 0) {
+        item.quantity--;
+        state.totalQuantity--;
+      }
+     },
   },
 });
 

@@ -5,7 +5,7 @@ import './CartItem.css';
 import PropTypes from 'prop-types';
 
 const CartItem = ({ onContinueShopping }) => {
-  const cart = useSelector(state => state.cart.items);
+  const cart = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const [totalQuantity, setTotalQuantity] = useState(0);
 
@@ -21,12 +21,12 @@ const CartItem = ({ onContinueShopping }) => {
     }, 0);
   };
 
-  const handleContinueShopping = (e) => {
+  const handleContinueShopping = () => {
 
     onContinueShopping();
   };
 
-  const handleCheckoutShopping = (e) => {
+  const handleCheckoutShopping = () => {
     alert('Functionality to be added for future reference');
   };
 
@@ -35,13 +35,11 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleDecrement = (item) => {
-    dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
-      if (item.quantity === 1) {
-        dispatch(removeItem(item.name));
-      } else {
-        dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
-      }
-   
+    if (item.quantity === 1) {
+      dispatch(removeItem(item.name));
+    } else {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    }
   };
 
   const handleRemove = (item) => {
@@ -98,5 +96,3 @@ CartItem.propTypes = {
 };
 
 export default CartItem;
-
-
