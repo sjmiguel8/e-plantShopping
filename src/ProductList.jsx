@@ -7,11 +7,11 @@ const ProductList = () => {
     const dispatch = useDispatch();
     const [addedToCart, setAddedToCart] = useState({});
     
-    const handleAddToCart = (product) => {
-        dispatch(addItem(product));
+    const handleAddToCart = (plant) => {
+        dispatch(addItem(plant));
         setAddedToCart((prevState) => ({
            ...prevState,
-           [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
+           [plant.name]: true, // Set the product name as key and value as true to indicate it's added to cart
          }));
       };
     
@@ -19,7 +19,7 @@ const ProductList = () => {
         console.log(addedToCart);
     }, [addedToCart]);
 
-    const plantsArray = [
+const plantsArray = [
     {
             category: "Air Purifying Plants",
             plants: [
@@ -270,7 +270,7 @@ const ProductList = () => {
         <div className="product-grid">
         {plantsArray.map((category, index) => (
     <div key={index}>
-        <h1><div>{category.category}</div></h1>
+        <h1>{category.category}</h1>
         <div className="product-list">
             {category.plants.map((plant, plantIndex) => (
             <div className="product-card" key={plantIndex}>
@@ -278,6 +278,7 @@ const ProductList = () => {
                 <div className="product-title">{plant.name}</div>
                 {/*Similarly like the above plant.name show other details like description and cost*/}
                 <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                {addedToCart[plant.name] && <span>Added to cart!</span>}
             </div>
             ))}
         </div>
