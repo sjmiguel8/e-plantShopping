@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import './ProductList.css'
 import addItem from './CartSlice.jsx'
 
+
 function ProductList() {
     const [addedToCart, setAddedToCart] = useState({});
     const handleAddToCart = (product) => {
