@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
@@ -7,35 +7,61 @@ import './CartItem.css';
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
+  const [totalQuantity, setTotalQuantity] = useState(0);
+
+  useEffect(() => {
+    const total = cart.reduce((total, item) => {
+      setTotalQuantity(total);
+    ), [cart];
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+    return cart.reduce((total, item) => {
+      return total = item.cost * item.quantity;
+    }, 0);
   };
 
   const handleContinueShopping = (e) => {
-   
+    const handleCheckoutShopping = (e) => {
+      alert('Functionality to be added for future reference');
+    };
   };
 
 
 
   const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+      if (item.quantity === 1) {
+        dispatch(removeItem(item.name));
+      } else {
+        dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+      }
    
   };
 
   const handleRemove = (item) => {
+    dispatch(removeItem(item.name));
+
   };
 
   // Calculate total cost based on quantity for an item
-  const calculateTotalCost = (item) => {
-  };
+ const calculateTotalCost = () => {
+  return cart.reduce((total, item) => {
+    const totalCost = item.cost * item.quantity;
+    return total + totalCost;
 
-  return (
+  }
+  
+};
+  
+return (
     <div className="cart-container">
       <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+      <h3>Total Items in the Cart: {totalQuantity}</h3>
       <div>
         {cart.map(item => (
           <div className="cart-item" key={item.name}>
@@ -62,6 +88,7 @@ const CartItem = ({ onContinueShopping }) => {
       </div>
     </div>
   );
+
 };
 
 export default CartItem;
