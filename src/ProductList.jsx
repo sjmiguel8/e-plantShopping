@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './ProductList.css'
 import { addItem } from './CartSlice';
 import CartItem from './CartItem';
 
 function ProductList() {
     const dispatch = useDispatch();
+    const cart = useSelector((state) => state.cart.plants);
     const [addedToCart, setAddedToCart] = useState({});
-    const [showCart, setShowCart] = useState(false); 
+    const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false);
-    
+  
     const handleCartClick = (e) => {
-        e.preventDefault();
-        setShowCart(true); // Set showCart to true when cart icon is clicked
+      e.preventDefault();
+      setShowCart(true); // Set showCart to true when cart icon is clicked
     };
+  
     const handlePlantsClick = (e) => {
-        e.preventDefault();
-        setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
-        setShowCart(false); // Hide the cart when navigating to About Us
+      e.preventDefault();
+      setShowPlants(true); // Set showPlants to true when "Plants" link is clicked
+      setShowCart(false); // Hide the cart when navigating to Plants
     };
-
+  
     const handleAddToCart = (plant) => {
-        dispatch(addItem(plant));
-        setAddedToCart((prevState) => ({
-           ...prevState,
-           [plant.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-    }));
-      };
-    
+      console.log('Adding to cart:', plant); // Debugging log
+      dispatch(addItem(plant));
+      setAddedToCart((prevState) => ({
+        ...prevState,
+        [plant.name]: true, // Set the product name as key and value as true to indicate it's added to cart
+      }));
+    };
+  
     useEffect(() => {
-        console.log(addedToCart);
+      console.log('Added to cart:', addedToCart); // Debugging log
     }, [addedToCart]);
 
 const plantsArray = [
@@ -258,13 +261,8 @@ const plantsArray = [
     color: 'white',
     fontSize: '30px',
     textDecoration: 'none',
-   };
+   }
 
-   
-   const handleContinueShopping = (e) => {
-    e.preventDefault();
-    setShowCart(false);
-  };
     return (
         <div>
              <div className="navbar" style={styleObj}>
@@ -296,6 +294,8 @@ const plantsArray = [
                 <img className="product-image" src={plant.image} alt={plant.name} />
                 <div className="product-title">{plant.name}</div>
                 {/*Similarly like the above plant.name show other details like description and cost*/}
+                <div className="product-description">{plant.description}</div>
+                <div className="product-cost">{plant.cost}</div>
                 <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
                 {addedToCart[plant.name] && <span>Added to cart!</span>}
             </div>
@@ -306,9 +306,9 @@ const plantsArray = [
 
     </div>
 
-        ):(
-<CartItem onContinueShopping={handleContinueShopping}/>
-)}
+    ):(
+    <CartItem onContinueShopping={() => setShowCart(false)} />
+    )}
     </div>
     );
 }

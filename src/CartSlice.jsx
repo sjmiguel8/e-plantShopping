@@ -1,48 +1,61 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const CartSlice = createSlice({
+const initialState = {
+  plants: [],
+  totalQuantity: 0,
+};
+
+const cartSlice = createSlice({
   name: 'cart',
-  initialState: {
-    items: [], // Initialize items as an empty array
-    totalQuantity: 0,
-  },
+  initialState,
   reducers: {
     addItem: (state, action) => {
-      const { name, image, cost } = action.payload; 
-      const existingItem = state.items.find(item => item.name === name);
-      if (existingItem) {
-        existingItem.quantity++;
+      const { name, image, cost } = action.payload;
+      const existingPlant = state.plants.find(plant => plant.name === name);
+      if (existingPlant) {
+        existingPlant.quantity++;
       } else {
-        state.items.push({ name, image, cost, quantity: 1 });
+        state.plants.push({ name, image, cost, quantity: 1 });
       }
       state.totalQuantity++;
-      
+      console.log('Plant added:', state.plants); // Debugging log
     },
     removeItem: (state, action) => {
-      const itemToRemove = state.items.find(item => item.name === action.payload);
-      if (itemToRemove) {
-        state.totalQuantity -= itemToRemove.quantity;
-        state.items = state.items.filter(item => item.name !== action.payload);
+      const plantToRemove = state.plants.find(plant => plant.name === action.payload);
+      if (plantToRemove) {
+        state.totalQuantity -= plantToRemove.quantity;
+        state.plants = state.plants.filter(plant => plant.name !== action.payload);
+        console.log('Plant removed:', state.plants); // Debugging log
       }
     },
     updateQuantity: (state, action) => {
       const { name, quantity } = action.payload;
-      const itemToUpdate = state.items.find(item => item.name === name);
-      if (itemToUpdate) {
-        state.totalQuantity += quantity - itemToUpdate.quantity;
-        itemToUpdate.quantity = quantity;
+      const plantToUpdate = state.plants.find(plant => plant.name === name);
+      if (plantToUpdate) {
+        state.totalQuantity += quantity - plantToUpdate.quantity;
+        plantToUpdate.quantity = quantity;
+        console.log('Plant quantity updated:', state.plants); // Debugging log
       }
-     },
-     decrement: (state, action) => {
-      const item = state.items.find(item => item.name === action.payload);
-      if (item && item.quantity > 0) {
-        item.quantity--;
+    },
+    increment: (state, action) => {
+      const plant = state.plants.find(plant => plant.name === action.payload);
+      if (plant) {
+        plant.quantity++;
+        state.totalQuantity++;
+        console.log('Plant incremented:', state.plants); // Debugging log
+      }
+    },
+    decrement: (state, action) => {
+      const plant = state.plants.find(plant => plant.name === action.payload);
+      if (plant && plant.quantity > 0) {
+        plant.quantity--;
         state.totalQuantity--;
+        console.log('Plant decremented:', state.plants); // Debugging log
       }
-     },
+    },
   },
 });
 
-export const { addItem, removeItem, updateQuantity } = CartSlice.actions;
+export const { addItem, removeItem, updateQuantity, increment, decrement } = cartSlice.actions;
 
-export default CartSlice.reducer;
+export default cartSlice.reducer;
