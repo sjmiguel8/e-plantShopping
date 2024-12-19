@@ -10,6 +10,7 @@ function ProductList() {
     const [addedToCart, setAddedToCart] = useState({});
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false);
+    
   
     const handleCartClick = (e) => {
       e.preventDefault();
