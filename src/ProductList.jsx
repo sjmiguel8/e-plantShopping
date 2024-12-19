@@ -296,7 +296,7 @@ const plantsArray = [
                 {/*Similarly like the above plant.name show other details like description and cost*/}
                 <div className="product-description">{plant.description}</div>
                 <div className="product-cost">{plant.cost}</div>
-                <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                <button  className="product-button" onClick={() => handleAddToCart(plant)}disabled={addedToCart[plant.name]}>Add to Cart</button>
                 {addedToCart[plant.name] && <span>Added to cart!</span>}
             </div>
             ))}
